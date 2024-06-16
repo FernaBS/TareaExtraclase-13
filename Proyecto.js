@@ -1,10 +1,10 @@
 import Entidad from "./Entidad.js";
 
-export default class ReservaBase extends Entidad{
-    constructor(nombre, descripcion, fechaInicio, fechaFin){
-        super(nombre, descripcion);
-        this.fechaInicio = new Date();
-        this.fechaFin = new Date();
+export default class Proyecto extends Entidad{
+    constructor(name, description, startDate, endDate){
+        super(name, description);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
 }
