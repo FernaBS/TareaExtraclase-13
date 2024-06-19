@@ -5,7 +5,7 @@ const prompt = pr({sigint: true});
 
 export default class Interfaz {
     constructor(){
-        this.proyects = new Set();
+        this.proyects = [];
     }
     
     menu(){
@@ -28,58 +28,61 @@ export default class Interfaz {
     opcionSelected(opcion){
         let finish = null;
         switch(opcion){
-            case "1": 
-            {   
-                let name = this.setName();
-                let description = this.setDescription();
-                let messageDate = 'Fecha de inicio';
-                let startDate = this.validateDate(messageDate);
-                startDate = this.setDate(startDate);
-                messageDate = 'Fecha de fin';
-                let endDate = this.validateDate(messageDate);
-                endDate = this.setDate(endDate);
-                this.proyects.add(new Proyecto(name, description, startDate, endDate));
+            case "1":    
+                this.addProyect();
                 finish = false;
                 break;
-            }
             case "2":
-            {
                 this.updateDescription();
                 finish = false;
                 break;
-            }
             case "3":
-            {
-                let arrayProyects = Array.from(this.proyects);
-                arrayProyects.forEach((proyect, index) => {
-                    console.log(`\nProyecto #${index+1}`);
-                    console.log(`Nombre: ${proyect.name}`);
-                    console.log(`Descripcion: ${proyect.description}`);
-                    console.log(`Fecha de inicio: ${proyect.startDate}`);
-                    console.log(`Fecha de fin: ${proyect.endDate}`);
-                })
+                this.showProyects();
                 finish = false;
                 break;
-            }
             case "4":
-            {
                 finish = true;
                 break;
-            }
-            
-
+            default:
+                console.log("Opción incorrecta");
+                finish = false;
         }
         return finish;
+    }
+    
+    addProyect(){
+        let name = this.setName();
+        let description = this.setDescription();
+        let messageDate = 'Fecha de inicio';
+        let startDate = this.setStartDate(messageDate);
+        messageDate = 'Fecha de fin';
+        let endDate = this.setEndDate(messageDate, startDate);
+        this.proyects.push(new Proyecto(name, description, startDate, endDate));
+    }
+
+    showProyects(){
+        this.proyects.forEach((proyect, index) => {
+            console.log(`\nProyecto #${index+1}`);
+            console.log(`Nombre: ${proyect.name}`);
+            console.log(`Descripcion: ${proyect.description}`);
+            console.log(`Fecha de inicio: ${proyect.startDate}`);
+            console.log(`Fecha de fin: ${proyect.endDate}`);
+        })
     }
     
     setName(){
         let name;
         let regex = /^[a-zA-Z\s]+$/;
+        let end = false;
         do{
             name = prompt("Introduce nombre de proyecto: ");
             if(!regex.test(name))
                 console.log('Nombre de proyecto incorrecto');
-        }while(!regex.test(name))
+            else if(this.proyects.find(project => project.name.toLowerCase() === name.toLowerCase()))
+                    console.log('Ya existe un proyecto con ese nombre.');
+            else
+                end = true;
+        }while(!end)
         return name;
     }
 
@@ -91,39 +94,62 @@ export default class Interfaz {
         return description;
     }
 
-    validateDate(message){
+    setEndDate(message, startDate){
         let regexDate = /^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/;
         let date;
+        let end = false;
         do{
             date = prompt(`${message} de proyecto, formato DD/MM/YYYY: `);
             if(!regexDate.test(date))
                 console.log(`${message} incorrecta`);
-        }while(!regexDate.test(date))
+            else {
+                let arrayDate = date.split('/');
+                let day = arrayDate[0];
+                let month = arrayDate[1];
+                let year = arrayDate[2];
+                month = parseInt(month) - 1;
+                date = new Date(year, month, day);
+                if(date >= startDate)
+                    end = true;
+                else
+                    console.log(`La ${message} de proyecto debe ser posterior a la fecha de inicio`);
+            }
+        }while(!end)
         return date;
     }
 
-    setDate(date){
-        let arrayDate = date.split('/');
-        let day = arrayDate[0];
-        let month = arrayDate[1];
-        let year = arrayDate[2];
-        month = parseInt(month) - 1;
-        let oficialDate = new Date(year, month, day);
-        return oficialDate;
+    setStartDate(message){
+        let regexDate = /^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/;
+        let date;
+        let end = false;
+        do{
+            date = prompt(`${message} de proyecto, formato DD/MM/YYYY: `);
+            if(!regexDate.test(date))
+                console.log(`${message} incorrecta`);
+            else {
+                let arrayDate = date.split('/');
+                let day = arrayDate[0];
+                let month = arrayDate[1];
+                let year = arrayDate[2];
+                month = parseInt(month) - 1;
+                date = new Date(year, month, day);
+                end = true;
+            }
+        }while(!end)
+        return date;
     }
 
     updateDescription(){
         console.log('\nNombre de proyectos: ');
-        let arrayProyects = Array.from(this.proyects);
-        arrayProyects.forEach((proyect, index) => {console.log(`${index + 1}- ${proyect.name}`);})
+        this.proyects.forEach((proyect, index) => {console.log(`${index + 1}- ${proyect.name}`);})
         let indexProyect;
         do{
             indexProyect = prompt('Selecciona proyecto a actualizar descripcion: ');
-            if(indexProyect > arrayProyects.length || indexProyect < 1)
+            if(indexProyect > this.proyects.length || indexProyect < 1)
                 console.log('Número de proyecto erróneo')
             else
-                arrayProyects[indexProyect-1].description = this.setDescription(); 
-        }while(indexProyect > arrayProyects.length || indexProyect < 1)
+                this.proyects[indexProyect-1].description = this.setDescription(); 
+        }while(indexProyect > this.proyects.length || indexProyect < 1)
     }
 
 }
