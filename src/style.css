@@ -58,5 +58,29 @@ input{
     height: 2rem;
 }
 
+.table-container{
+    display: flex;
+    justify-content: center;
+}
 
+.project-table {
+    margin-top: 2rem;
+    width: 90%;
+    border-collapse: collapse;
+}
+
+.project-table th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.project-table td{
+    color: #ddd;
+}
+
+.project-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
 
