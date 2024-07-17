@@ -10,14 +10,14 @@
    <div class="form-container">
     <form action="" class="form-project">
         <label for="name">Name of Project</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="text-input">
         <label for="startDate">Initial Date</label>
-        <input type="date" name="startDate" id="startDate">
+        <input type="date" name="startDate" id="start-input">
         <label for="endDate">End Date</label>
-        <input type="date" name="endDate" id="endDate">
+        <input type="date" name="endDate" id="end-input">
         <label for="description">Description of Project</label>
-        <textarea name="description" id="" class="text-form"></textarea>
-        <button type="submit" class="submit-button" onclick="addRow()">Accept</button>
+        <textarea name="description" id="description-input" class="text-form"></textarea>
+        <button type="submit" class="submit-button" id="submit">Accept</button>
     </form>
    </div>
    <div class="table-container">
@@ -40,6 +40,6 @@
         </tbody>
     </table>
    </div>
-   <script src="./js/index1.js" type="module"></script>
+   <script type="module" src="js/index.js"></script>
 </body>
 </html>
