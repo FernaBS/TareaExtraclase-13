@@ -17,7 +17,8 @@ submitBtn.addEventListener('click', (e) => {
     if(name && start && end && description){
         if(start < end){
             projects.push(new Proyecto(name, description, start, end));
-            saveLocalStorage(projects);
+            saveLocalStorage(projects).then(message => console.log(message))
+            .catch(error => console.error(error));
         }
         else alert('La fecha inicial no puede ser mayor que la final');
     }
@@ -26,10 +27,17 @@ submitBtn.addEventListener('click', (e) => {
 
 //Función que se encarga de guardar la informacion en el localStorage
 function saveLocalStorage(array){
-    localStorage.setItem('projects', JSON.stringify(projects));
+    return new Promise((resolve, reject) => {
+        try {
+            localStorage.setItem('projects', JSON.stringify(array));  
+            resolve('Datos almacenados correctamente');
+        } catch(e){
+            reject('Error al guardar los datos');
+        }
+    })
 }
 
-console.log(projects);
+
 
 
 const initTable = (projects) => {
