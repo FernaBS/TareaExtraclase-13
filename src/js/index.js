@@ -56,3 +56,45 @@ const initTable = (projects) => {
 }
 
 initTable(projects);
+
+ 
+        
+var fechaElemento = document.querySelectorAll('.fecha h5');
+var elemento = document.querySelectorAll('.concluido');
+fechaElemento.forEach(function(element, index) {
+    var fechaTexto = element.textContent.trim();
+
+    // Convertir la fecha de texto a un objeto Date
+       var fechaElementoDate = new Date(fechaTexto);
+  // Obtener la fecha actual
+       var fechaActual = new Date();
+
+       // Comparar las fechas
+       if (fechaElementoDate > fechaActual) {
+          
+       } else if (fechaElementoDate < fechaActual) {
+           
+       if (elemento) {
+           // Cambiar el estilo 'display' a 'block'
+            if (elemento[index] !== undefined) {
+
+        elemento[index].style.display = 'block';
+            }
+          
+       }
+       } else {
+           
+       }
+
+       
+});
+
+let titleAutor = document.querySelectorAll('.title-autor p');
+let listAutor = document.querySelectorAll('.list-Autor');
+
+listAutor.forEach((element, index) => {
+    if(element.innerHTML.trim() === '')
+        titleAutor[index].style.display = 'none';
+})
+
+
