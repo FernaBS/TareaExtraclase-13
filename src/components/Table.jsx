@@ -1,4 +1,7 @@
-const Table = () => {
+import { useEffect, useState } from "react"; 
+
+const Table = ({ projects }) => {
+
     return (
         <>
             <table className="project-table">
@@ -11,6 +14,16 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    {
+                        projects.map((project, index) => (
+                            <tr key={index}>
+                                <td>{ project.name }</td>
+                                <td>{ project.startDate }</td>
+                                <td>{ project.endDate }</td>
+                                <td>{ project.description }</td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </>
